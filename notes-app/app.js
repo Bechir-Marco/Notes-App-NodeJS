@@ -1,35 +1,14 @@
 const chalk = require('chalk');
-const validator = require('validator');
-const { demandOption } = require('yargs');
-const yargs = require('yargs');
+const fs = require('fs');
 
+const dataJson = fs.readFileSync('./playground/json.json').toString()
+const dataObject = JSON.parse(dataJson)
+ dataObject.name= 'Marco'
+ dataObject.age= 25
 
-// Create add command 
-yargs.command({
-    command: 'add',
-    describe: 'Add new Note',
-    builder: {
-        title: {
-            describe: 'title of the add',
-            demandOption: false,
-            type: 'string'  
-        },
-        salary: {
-            describe: 'title of the add',
-            demandOption: true,
-            type: Number  
-        },
-        body: {
-            describe: 'This Is Body',
-            demandOption: true,
-            type: 'string'
-        }
-    },
-    handler: function (argv) {
-    console.log('adding a note',argv.salary);
-    console.log('adding a note',argv.body);
-}
-})  
+newDataToJson = JSON.stringify(dataObject);
 
-//  console.log(yargs.argv);
-yargs.parse()
+fs.writeFileSync('./playground/json.json', newDataToJson);
+
+const a = fs.readFileSync('./playground/json.json');
+console.log(a.toString());
