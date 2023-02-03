@@ -1,14 +1,44 @@
 const chalk = require('chalk');
 const fs = require('fs');
+const { argv } = require('process');
+const yargs = require('yargs');
+const notes = require('./notes.js');
 
-const dataJson = fs.readFileSync('./playground/json.json').toString()
-const dataObject = JSON.parse(dataJson)
- dataObject.name= 'Marco'
- dataObject.age= 25
 
-newDataToJson = JSON.stringify(dataObject);
+yargs.command({
+  command: "add",
+  describe: "Add new Note",
+  builder: {
+    title: {
+      describe: "title of the add",
+      demandOption: false,
+      type: "string",
+    },
+    body: {
+      describe: "This Is Body",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    notes.addNote(argv.title, argv.body);
+   
+  }
+});
+yargs.command({
+  command: "remove",
+  describe: "Remove new Note",
+  builder: {
+    title: {
+      describe: "title of the remove",
+      demandOption: true,
+      type: "string",
+    }
+  },
+  handler: function (argv) {
+    notes.removeNote(argv.title);
+  },
+});
 
-fs.writeFileSync('./playground/json.json', newDataToJson);
-
-const a = fs.readFileSync('./playground/json.json');
-console.log(a.toString());
+// console.log(yargs.argv);
+yargs.parse();
